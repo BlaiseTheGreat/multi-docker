@@ -14,4 +14,11 @@ after_success:
   - docker build -t bwillou/multi-nginx ./nginx
   - docker build -t bwillou/multi-server ./server
   - docker build -t bwillou/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #Take those images and push them to the docker ci
+  - docker push bwillou/multi-client
+  - docker push bwillou/multi-nginx
+  - docker push bwillou/multi-server
+  - docker push bwillou/multi-worker
 
