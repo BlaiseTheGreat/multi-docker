@@ -1,13 +1,12 @@
-language: generic
 sudo: required
 services:
   - docker
 
-  before_install:
+before_install:
   - docker build -t bwillou/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true USERNAME/react-test npm test
+  - docker run bwillou/react-test npm test -- --coverage
 
 after_success:
   - docker build -t bwillou/multi-client ./client
@@ -16,7 +15,7 @@ after_success:
   - docker build -t bwillou/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  #Take those images and push them to the docker ci
+  # Take those images and push them to docker hub
   - docker push bwillou/multi-client
   - docker push bwillou/multi-nginx
   - docker push bwillou/multi-server
